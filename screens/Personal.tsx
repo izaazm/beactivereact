@@ -1,37 +1,64 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
 import { Text, View, ScrollView } from '../components/Themed';
-import DatePickers from '../components/DatePicker';
+import DatePicker from '../components/DatePicker';
 import PersonalStat from '../components/PersonalStat';
 import BarChart from '../components/Test';
-
-const dimensions = Dimensions.get("window");
+import ProgressBar from '../components/ProgressBar';
 
 export default function Personal() {
   const data = [
-    { label: 'Jan', value: 500 },
-    { label: 'Feb', value: 312 },
-    { label: 'Mar', value: 424 },
-    { label: 'Apr', value: 745 },
-    { label: 'May', value: 89 },
-    { label: 'Jun', value: 434 },
-    { label: 'Jul', value: 650 },
-    { label: 'Aug', value: 980 },
-    { label: 'Sep', value: 123 },
-    { label: 'Oct', value: 186 },
-    { label: 'Nov', value: 689 },
-    { label: 'Dec', value: 643 }
+    { label: '12AM', value: 0 },
+    { label: '1AM', value: 0 },
+    { label: '2AM', value: 0 },
+    { label: '3AM', value: 0 },
+    { label: '4AM', value: 0 },
+    { label: '5AM', value: 0 },
+    { label: '6AM', value: 650 },
+    { label: '7AM', value: 980 },
+    { label: '8AM', value: 123 },
+    { label: '9AM', value: 0 },
+    { label: '10AM', value: 0 },
+    { label: '11AM', value: 643 },
+    { label: '12PM', value: 500 },
+    { label: '1PM', value: 312 },
+    { label: '2PM', value: 424 },
+    { label: '3PM', value: 745 },
+    { label: '4PM', value: 0 },
+    { label: '5PM', value: 0 },
+    { label: '6PM', value: 650 },
+    { label: '7PM', value: 980 },
+    { label: '8PM', value: 123 },
+    { label: '9PM', value: 0 },
+    { label: '10PM', value: 0 },
+    { label: '11PM', value: 0 },
   ]
+
+  let stepsToday = 5500
+  let CurStreak = 2
+  let TimeActive = '1H 20 M';
+
   return (
     <ScrollView>
-      <DatePickers/>
-      <View style={styles.separator}></View>
+      <DatePicker/>
       <View style={styles.container}>
-        <BarChart data={data}/>
+        <ProgressBar steps={stepsToday}/>
       </View>
+
+      <View style={styles.separator}></View>
+
+      <View style={styles.container}>
+        <PersonalStat 
+        steps={stepsToday} 
+        streak={CurStreak} 
+        timeactive={TimeActive}
+        />
+      </View>
+
       <View style={styles.separator}></View>
       <View style={styles.container}>
-        <PersonalStat/>
+        <Text style={styles.title}>Your Daily Walking Habit</Text>
+        <BarChart data={data} round={100} unit="steps"/>
       </View>
     </ScrollView>
   );
@@ -44,12 +71,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 15,
+    fontFamily: 'samsung-sans-medium',
+    marginBottom: 20
   },
   separator: {
-    marginVertical: 25,
-    height: 1,
-    width: '80%',
+    marginVertical: 35,
+    alignContent: 'center',
+    textAlign: 'center',
+    marginHorizontal: (Dimensions.get("window").width*0.1),
+    borderBottomColor: 'grey',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 });

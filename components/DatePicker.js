@@ -1,49 +1,122 @@
-import React, { useState } from 'react';
-import { StyleSheet, Button, Dimensions } from 'react-native';
+import React, { useState } from "react";
+import { Pressable, StyleSheet, Dimensions} from 'react-native';
 import { Text, View } from '../components/Themed';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import DatePicker from "react-datepicker";
-
-const dimensions = Dimensions.get("window");
-
-export default function DatePickers() {
-  const [startDate, setStartDate] = useState(new Date());
-  const tomorrow = new Date(new Date().getTime() + (24 * 60 * 60 * 1000))
-  const yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000))
+import { style } from "d3";
+ 
+export default function DatePicker() {
+  const [datePicker, setDatePicker] = useState(false);
+  const [date, setDate] = useState(new Date());
+ 
+  function showDatePicker() {
+    setDatePicker(true);
+  };
+ 
+  function onDateSelected(event, value) {
+    setDate(value);
+    setDatePicker(false);
+  };
+ 
   return (
-    <View style={styles.container}>
-      <View style={styles.fixToText}>
-        <Button  onPress={() => (setStartDate(yesterday))}  title="<"  color="#FFFFFF"/>
-        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-        <Button  onPress={() => (setStartDate(tomorrow))}  title=">"  color="#FFFFFF"/>
-      </View>
-    </View>
-  )
-}
+    <View style={{flexDirection:"row", marginVertical:20}}>
+        <View style={style.sidePressable}>
+            <Pressable
+              onPress={() => (setDate(new Date(date.getTime() - (24 * 60 * 60 * 1000))))}
+              style={({ pressed }) => [
+                {
+                backgroundColor: pressed
+                  ? 'rgb(210, 230, 255)'
+                  : 'white'
+                },
+                styles.wrapperCustom
+                ]}>
+              <Text style={styles.text}>
+                {"<"}
+              </Text>
+            </Pressable>
+        </View>
 
+        <View style={style.pressable}>
+        {datePicker && (
+          <DateTimePicker
+            value={date}
+            mode={'date'}
+            display={'default'}
+            is24Hour={true}
+            onChange={onDateSelected}
+          />
+        )}
+ 
+        {!datePicker && (
+          <View>
+            <Pressable
+            onPress={showDatePicker}
+            style={({ pressed }) => [
+            {
+            backgroundColor: pressed
+              ? 'rgb(210, 230, 255)'
+              : 'white'
+            },
+            styles.wrapperCustom
+            ]}>
+              <Text style={styles.mainText}>
+                {date.toDateString()}
+              </Text>
+            </Pressable>
+          </View>
+        )}
+        </View>
+        
+        <View style={style.sidePressable}>
+          <Pressable
+              onPress={() => (setDate(new Date(date.getTime() + (24 * 60 * 60 * 1000))))}            
+              style={({ pressed }) => [
+                {
+                backgroundColor: pressed
+                  ? 'rgb(210, 230, 255)'
+                  : 'white'
+                },
+                styles.wrapperCustom
+                ]}>
+              <Text style={styles.text}>
+                {">"}
+              </Text>
+            </Pressable>
+        </View>
+    </View>
+  );
+}
+ 
 const styles = StyleSheet.create({
-  container: {
-    flex:1,
+  MainContainer: {
+    flex: 1,
+  },
+  pressable:{
     alignItems: 'center',
+    flexGrow: 2,
     justifyContent: 'center',
   },
-  left:{
-    flex: 1,
-    width: dimensions.width*0.2,
-    height: 100,
+  sidePressable:{
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  center:{
-    flex: 1,
-    width: dimensions.width*0.6,
-    height: 100,
+  mainText:{
+    width: (Dimensions.get("window").width-135),
+    fontSize: 20,
+    fontFamily: 'samsung-sans-bold',
+    justifyContent: 'center',
+    textAlign: 'center'
   },
-  right:{
-    flex: 1,
-    width: dimensions.width*0.2,
-    height: 100,
+  text: {
+    width: 50,
+    fontSize: 20,
+    fontFamily: 'samsung-sans-bold',
+    justifyContent: 'center',
+    textAlign: 'center'
   },
-  fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  wrapperCustom: {
+    borderRadius: 8,
+    padding: 6
   },
 });

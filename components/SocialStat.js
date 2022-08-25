@@ -2,33 +2,33 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 
-export default function Personal(props) {
-    let Steps = props.steps;
-    let CurStreak = props.streak;
-    let TimeActive = props.timeactive;
+export default function SocialStat(props) {
+    let PrevWin = props.prevwin;
+    let Streak = props.streak;
+    let TotalSteps = props.totalsteps;
 
     return(
         <View style={{flexDirection:"row"}}>
             <View style={{flex:1}}>
                 <Text style={styles.textleft}>
-                    today steps
+                    prev winner
                 </Text>
                 <Text style={styles.textleft}>
-                    goal streak
+                    streak
                 </Text>
                 <Text style={styles.textleft}>
-                    time active
+                    total steps
                 </Text>
             </View>
             <View style={{flex:1}}>
                 <Text style={styles.textright}>
-                    {Steps}
+                    {PrevWin}
                 </Text>
                 <Text style={styles.textright}>
-                    {CurStreak} days
+                    {Streak} days
                 </Text>
                 <Text style={styles.textright}>
-                    {TimeActive}
+                    {TotalSteps}
                 </Text>
             </View>
         </View>
